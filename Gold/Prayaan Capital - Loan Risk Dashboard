@@ -1,0 +1,742 @@
+@@ -0,0 +1,741 @@
++{
++  "datasets": [
++    {
++      "name": "ae26b557",
++      "displayName": "active_loans",
++      "config": {
++        "version": "1.1",
++        "source": "deproject01.gold.active_loans",
++        "dimensions": [
++          {
++            "name": "total_active_loans",
++            "expr": "source.total_active_loans",
++            "displayName": "Total Active Loans"
++          }
++        ],
++        "measures": [
++          {
++            "name": "count",
++            "expr": "COUNT(*)",
++            "comment": "Represents the total number of rows in the dataset. Use this measure to count all",
++            "displayName": "Count"
++          }
++        ]
++      }
++    },
++    {
++      "name": "bf0630cb",
++      "displayName": "total_outstanding_amount",
++      "config": {
++        "version": "1.1",
++        "source": "deproject01.gold.total_outstanding_amount",
++        "dimensions": [
++          {
++            "name": "total_outstanding_amount",
++            "expr": "source.total_outstanding_amount",
++            "displayName": "Total Outstanding Amount"
++          }
++        ],
++        "measures": [
++          {
++            "name": "count",
++            "expr": "COUNT(*)",
++            "comment": "Represents the total number of rows in the dataset. Use this measure to count all",
++            "displayName": "Count"
++          }
++        ]
++      }
++    },
++    {
++      "name": "776516b4",
++      "displayName": "avg_urs_score",
++      "config": {
++        "version": "1.1",
++        "source": "deproject01.gold.avg_urs_score",
++        "dimensions": [
++          {
++            "name": "avg_urs_score",
++            "expr": "source.avg_urs_score",
++            "displayName": "Avg Urs Score"
++          }
++        ],
++        "measures": [
++          {
++            "name": "count",
++            "expr": "COUNT(*)",
++            "comment": "Represents the total number of rows in the dataset. Use this measure to count all",
++            "displayName": "Count"
++          }
++        ]
++      }
++    },
++    {
++      "name": "ace984ad",
++      "displayName": "percentage_overdue_loans",
++      "config": {
++        "version": "1.1",
++        "source": "deproject01.gold.percentage_overdue_loans",
++        "dimensions": [
++          {
++            "name": "percentage_overdue_loans",
++            "expr": "source.percentage_overdue_loans",
++            "displayName": "Percentage Overdue Loans"
++          }
++        ],
++        "measures": [
++          {
++            "name": "count",
++            "expr": "COUNT(*)",
++            "comment": "Represents the total number of rows in the dataset. Use this measure to count all",
++            "displayName": "Count"
++          }
++        ]
++      }
++    },
++    {
++      "name": "f8a678d8",
++      "displayName": "percentage_severely_overdue",
++      "config": {
++        "version": "1.1",
++        "source": "deproject01.gold.percentage_severely_overdue",
++        "dimensions": [
++          {
++            "name": "percentage_severely_overdue",
++            "expr": "source.percentage_severely_overdue",
++            "displayName": "Percentage Severely Overdue"
++          }
++        ],
++        "measures": [
++          {
++            "name": "count",
++            "expr": "COUNT(*)",
++            "comment": "Represents the total number of rows in the dataset. Use this measure to count all",
++            "displayName": "Count"
++          }
++        ]
++      }
++    },
++    {
++      "name": "risk_segmentation",
++      "displayName": "risk_segmentation",
++      "queryLines": [
++        "SELECT\n",
++        "  *\n",
++        "FROM\n",
++        "  deproject01.gold.risk_segmentation"
++      ]
++    },
++    {
++      "name": "early_warning",
++      "displayName": "early_warning_indicators",
++      "queryLines": [
++        "SELECT\n",
++        "  *\n",
++        "FROM\n",
++        "  deproject01.gold.early_warning_indicators"
++      ]
++    }
++  ],
++  "pages": [
++    {
++      "name": "loan_risk_overview",
++      "displayName": "Loan Risk Overview",
++      "layout": [
++        {
++          "widget": {
++            "name": "kpi_header",
++            "multilineTextboxSpec": {
++              "lines": [
++                "## Key Performance Indicators"
++              ]
++            }
++          },
++          "position": {
++            "x": 0,
++            "y": 0,
++            "width": 12,
++            "height": 1
++          }
++        },
++        {
++          "widget": {
++            "name": "total_active_loans",
++            "queries": [
++              {
++                "name": "main_query",
++                "query": {
++                  "datasetName": "ae26b557",
++                  "fields": [
++                    {
++                      "name": "total_active_loans",
++                      "expression": "`total_active_loans`"
++                    }
++                  ],
++                  "disaggregated": true
++                }
++              }
++            ],
++            "spec": {
++              "version": 2,
++              "frame": {
++                "title": "Total Active Loans",
++                "showTitle": true
++              },
++              "widgetType": "counter",
++              "encodings": {
++                "value": {
++                  "fieldName": "total_active_loans",
++                  "displayName": "Total Active Loans"
++                }
++              }
++            }
++          },
++          "position": {
++            "x": 0,
++            "y": 1,
++            "width": 4,
++            "height": 3
++          }
++        },
++        {
++          "widget": {
++            "name": "avg_urs_score",
++            "queries": [
++              {
++                "name": "main_query",
++                "query": {
++                  "datasetName": "776516b4",
++                  "fields": [
++                    {
++                      "name": "avg_urs_score",
++                      "expression": "`avg_urs_score`"
++                    }
++                  ],
++                  "disaggregated": true
++                }
++              }
++            ],
++            "spec": {
++              "version": 2,
++              "frame": {
++                "title": "Avg URS Score",
++                "showTitle": true
++              },
++              "widgetType": "counter",
++              "encodings": {
++                "value": {
++                  "fieldName": "avg_urs_score",
++                  "displayName": "Avg URS Score"
++                }
++              }
++            }
++          },
++          "position": {
++            "x": 4,
++            "y": 1,
++            "width": 4,
++            "height": 3
++          }
++        },
++        {
++          "widget": {
++            "name": "pct_severely_overdue",
++            "queries": [
++              {
++                "name": "main_query",
++                "query": {
++                  "datasetName": "f8a678d8",
++                  "fields": [
++                    {
++                      "name": "percentage_severely_overdue",
++                      "expression": "`percentage_severely_overdue`"
++                    }
++                  ],
++                  "disaggregated": true
++                }
++              }
++            ],
++            "spec": {
++              "version": 2,
++              "frame": {
++                "title": "% Severely Overdue",
++                "showTitle": true
++              },
++              "widgetType": "counter",
++              "encodings": {
++                "value": {
++                  "fieldName": "percentage_severely_overdue",
++                  "displayName": "% Severely Overdue"
++                }
++              }
++            }
++          },
++          "position": {
++            "x": 8,
++            "y": 1,
++            "width": 4,
++            "height": 3
++          }
++        },
++        {
++          "widget": {
++            "name": "risk_seg_header",
++            "multilineTextboxSpec": {
++              "lines": [
++                "## Risk Segmentation"
++              ]
++            }
++          },
++          "position": {
++            "x": 0,
++            "y": 4,
++            "width": 12,
++            "height": 1
++          }
++        },
++        {
++          "widget": {
++            "name": "loans_by_segment",
++            "queries": [
++              {
++                "name": "main_query",
++                "query": {
++                  "datasetName": "risk_segmentation",
++                  "fields": [
++                    {
++                      "name": "badge",
++                      "expression": "`badge`"
++                    },
++                    {
++                      "name": "sum(no_of_loans)",
++                      "expression": "SUM(`no_of_loans`)"
++                    }
++                  ],
++                  "disaggregated": false
++                }
++              }
++            ],
++            "spec": {
++              "version": 3,
++              "frame": {
++                "title": "Loans by Risk Segment",
++                "showTitle": true
++              },
++              "widgetType": "bar",
++              "encodings": {
++                "x": {
++                  "fieldName": "badge",
++                  "axis": {
++                    "title": "Risk Segment"
++                  },
++                  "scale": {
++                    "type": "categorical"
++                  }
++                },
++                "y": {
++                  "fieldName": "sum(no_of_loans)",
++                  "axis": {
++                    "title": "Number of Loans"
++                  },
++                  "scale": {
++                    "type": "quantitative"
++                  }
++                }
++              }
++            }
++          },
++          "position": {
++            "x": 0,
++            "y": 5,
++            "width": 6,
++            "height": 6
++          }
++        },
++        {
++          "widget": {
++            "name": "outstanding_by_segment",
++            "queries": [
++              {
++                "name": "main_query",
++                "query": {
++                  "datasetName": "risk_segmentation",
++                  "fields": [
++                    {
++                      "name": "badge",
++                      "expression": "`badge`"
++                    },
++                    {
++                      "name": "sum(outstanding_amount)",
++                      "expression": "SUM(`outstanding_amount`)"
++                    }
++                  ],
++                  "disaggregated": false
++                }
++              }
++            ],
++            "spec": {
++              "version": 3,
++              "frame": {
++                "title": "Outstanding Amount by Risk Segment",
++                "showTitle": true
++              },
++              "widgetType": "bar",
++              "encodings": {
++                "x": {
++                  "fieldName": "badge",
++                  "axis": {
++                    "title": "Risk Segment"
++                  },
++                  "scale": {
++                    "type": "categorical"
++                  }
++                },
++                "y": {
++                  "fieldName": "sum(outstanding_amount)",
++                  "axis": {
++                    "title": "Outstanding Amount"
++                  },
++                  "scale": {
++                    "type": "quantitative"
++                  }
++                }
++              }
++            }
++          },
++          "position": {
++            "x": 6,
++            "y": 5,
++            "width": 6,
++            "height": 6
++          }
++        },
++        {
++          "widget": {
++            "name": "risk_seg_table",
++            "queries": [
++              {
++                "name": "main_query",
++                "query": {
++                  "datasetName": "risk_segmentation",
++                  "fields": [
++                    {
++                      "name": "badge",
++                      "expression": "`badge`"
++                    },
++                    {
++                      "name": "no_of_loans",
++                      "expression": "`no_of_loans`"
++                    },
++                    {
++                      "name": "outstanding_amount",
++                      "expression": "`outstanding_amount`"
++                    },
++                    {
++                      "name": "avg_dpd",
++                      "expression": "`avg_dpd`"
++                    },
++                    {
++                      "name": "default_rate_proxy",
++                      "expression": "`default_rate_proxy`"
++                    }
++                  ],
++                  "disaggregated": true
++                }
++              }
++            ],
++            "spec": {
++              "version": 2,
++              "frame": {
++                "title": "Risk Segmentation Details",
++                "showTitle": true
++              },
++              "widgetType": "table",
++              "encodings": {
++                "columns": [
++                  {
++                    "fieldName": "badge",
++                    "displayName": "Badge"
++                  },
++                  {
++                    "fieldName": "no_of_loans",
++                    "displayName": "No. of Loans"
++                  },
++                  {
++                    "fieldName": "outstanding_amount",
++                    "displayName": "Outstanding Amount"
++                  },
++                  {
++                    "fieldName": "avg_dpd",
++                    "displayName": "Avg DPD"
++                  },
++                  {
++                    "fieldName": "default_rate_proxy",
++                    "displayName": "Default Rate Proxy"
++                  }
++                ]
++              }
++            }
++          },
++          "position": {
++            "x": 0,
++            "y": 11,
++            "width": 12,
++            "height": 6
++          }
++        },
++        {
++          "widget": {
++            "name": "early_warning_header",
++            "multilineTextboxSpec": {
++              "lines": [
++                "## Early Warning Indicators"
++              ]
++            }
++          },
++          "position": {
++            "x": 0,
++            "y": 17,
++            "width": 12,
++            "height": 1
++          }
++        },
++        {
++          "widget": {
++            "name": "filter_branch",
++            "queries": [
++              {
++                "name": "dashboards/01f13cf22739161ab772f0543505ba85/datasets/01f13cf820d91ad58cae0afb3799d123_branch_id",
++                "query": {
++                  "datasetName": "early_warning",
++                  "fields": [
++                    {
++                      "name": "branch_id",
++                      "expression": "`branch_id`"
++                    },
++                    {
++                      "name": "branch_id_associativity",
++                      "expression": "COUNT_IF(`associative_filter_predicate_group`)"
++                    }
++                  ],
++                  "disaggregated": false
++                }
++              }
++            ],
++            "spec": {
++              "version": 2,
++              "frame": {
++                "title": "Branch ID",
++                "showTitle": true
++              },
++              "widgetType": "filter-multi-select",
++              "encodings": {
++                "fields": [
++                  {
++                    "fieldName": "branch_id",
++                    "queryName": "dashboards/01f13cf22739161ab772f0543505ba85/datasets/01f13cf820d91ad58cae0afb3799d123_branch_id"
++                  }
++                ]
++              }
++            }
++          },
++          "position": {
++            "x": 0,
++            "y": 18,
++            "width": 6,
++            "height": 2
++          }
++        },
++        {
++          "widget": {
++            "name": "filter_risk_flag",
++            "queries": [
++              {
++                "name": "dashboards/01f13cf22739161ab772f0543505ba85/datasets/01f13cf820d91ad58cae0afb3799d123_risk_flag",
++                "query": {
++                  "datasetName": "early_warning",
++                  "fields": [
++                    {
++                      "name": "risk_flag",
++                      "expression": "`risk_flag`"
++                    },
++                    {
++                      "name": "risk_flag_associativity",
++                      "expression": "COUNT_IF(`associative_filter_predicate_group`)"
++                    }
++                  ],
++                  "disaggregated": false
++                }
++              }
++            ],
++            "spec": {
++              "version": 2,
++              "frame": {
++                "title": "Risk Flag",
++                "showTitle": true
++              },
++              "widgetType": "filter-multi-select",
++              "encodings": {
++                "fields": [
++                  {
++                    "fieldName": "risk_flag",
++                    "queryName": "dashboards/01f13cf22739161ab772f0543505ba85/datasets/01f13cf820d91ad58cae0afb3799d123_risk_flag"
++                  }
++                ]
++              }
++            }
++          },
++          "position": {
++            "x": 6,
++            "y": 18,
++            "width": 6,
++            "height": 2
++          }
++        },
++        {
++          "widget": {
++            "name": "slippage_rate",
++            "queries": [
++              {
++                "name": "main_query",
++                "query": {
++                  "datasetName": "early_warning",
++                  "fields": [
++                    {
++                      "name": "branch_id",
++                      "expression": "`branch_id`"
++                    },
++                    {
++                      "name": "date",
++                      "expression": "`date`"
++                    },
++                    {
++                      "name": "repayment_slippage_rate",
++                      "expression": "`repayment_slippage_rate`"
++                    }
++                  ],
++                  "disaggregated": true
++                }
++              }
++            ],
++            "spec": {
++              "version": 3,
++              "frame": {
++                "title": "Repayment Slippage Rate Over Time",
++                "showTitle": true
++              },
++              "widgetType": "line",
++              "encodings": {
++                "x": {
++                  "fieldName": "date",
++                  "axis": {
++                    "title": "Date"
++                  },
++                  "scale": {
++                    "type": "categorical"
++                  }
++                },
++                "y": {
++                  "fieldName": "repayment_slippage_rate",
++                  "axis": {
++                    "title": "Slippage Rate"
++                  },
++                  "scale": {
++                    "type": "quantitative"
++                  }
++                },
++                "color": {
++                  "fieldName": "branch_id",
++                  "scale": {
++                    "type": "categorical"
++                  }
++                }
++              }
++            }
++          },
++          "position": {
++            "x": 0,
++            "y": 20,
++            "width": 6,
++            "height": 6
++          }
++        },
++        {
++          "widget": {
++            "name": "dpd_change",
++            "queries": [
++              {
++                "name": "main_query",
++                "query": {
++                  "datasetName": "early_warning",
++                  "fields": [
++                    {
++                      "name": "risk_flag",
++                      "expression": "`risk_flag`"
++                    },
++                    {
++                      "name": "date",
++                      "expression": "`date`"
++                    },
++                    {
++                      "name": "avg_dpd_change_vs_7_day_avg",
++                      "expression": "`avg_dpd_change_vs_7_day_avg`"
++                    }
++                  ],
++                  "disaggregated": true
++                }
++              }
++            ],
++            "spec": {
++              "version": 3,
++              "frame": {
++                "title": "DPD Change vs 7-Day Avg",
++                "showTitle": true
++              },
++              "widgetType": "line",
++              "encodings": {
++                "x": {
++                  "fieldName": "date",
++                  "axis": {
++                    "title": "Date"
++                  },
++                  "scale": {
++                    "type": "categorical"
++                  }
++                },
++                "y": {
++                  "fieldName": "avg_dpd_change_vs_7_day_avg",
++                  "axis": {
++                    "title": "Avg DPD Change"
++                  },
++                  "scale": {
++                    "type": "quantitative"
++                  }
++                },
++                "color": {
++                  "fieldName": "risk_flag",
++                  "scale": {
++                    "type": "categorical"
++                  }
++                }
++              }
++            }
++          },
++          "position": {
++            "x": 6,
++            "y": 20,
++            "width": 6,
++            "height": 6
++          }
++        }
++      ],
++      "pageType": "PAGE_TYPE_CANVAS",
++      "layoutVersion": "GRID_V1"
++    }
++  ],
++  "uiSettings": {
++    "theme": {
++      "widgetHeaderAlignment": "ALIGNMENT_UNSPECIFIED"
++    },
++    "applyModeEnabled": false
++  }
++}
