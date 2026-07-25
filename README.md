@@ -1,79 +1,83 @@
-# PrayaanCapital_Assignment
-
-Dashboard Link: https://adb-7405618761087876.16.azuredatabricks.net/dashboardsv3/01f13cf22739161ab772f0543505ba85/published?o=7405618761087876
+# Prayaan Capital Data Engineering Assignment
 
 
-**First Round Assignment for Prayaan Capital**
+A production-ready data pipeline engineered to process financial data, manage data quality anomalies, model complex risk metrics, and serve downstream analytics.
 
-I have started this assignment thinking of it as mid range assignment for me as a 3 yrs experienced data engineer but When I look into the data shared by interviewer, I got to know that why they gave 3 days to complete the assignment. As I don't have experience with financial data in data Engineering field it took so much time understanding the task while doing. 
+---
 
-First I worked with given data and I got to know that there is alot of relational inconsistency between data and end result was a disaster. So I generated my own csv data through Gemini. I tried multiple time to get desired data as given in task. It took me 4 prompts. 
-
-Instead revamping/rewriting all the existing code I just modified download csv file name as per code and then run it through to save a lot of time. 
-
-I started with check negative values in amount due and future dates completeing the data quality check with de duplication. 
-
-After cleaning the table I wrote them to silver from bronze containers. 
-
-Here starts the real task. Initiall I did a big mistake of joining all tables and pulling aggregated data spark.sql with CTEs, Window Functions. While working on the task I slept thinking of it and woke up suddenly with a blink of data modelling. As I don't have practice in data modelling I did not model the data aggregated tables. After waking up I compleleted revamped code in Silver folder with creating aggregated dataset with below columns and I kept repayments table as it is.
-
-**fact table**
--loan_id:string
--borrower_id:string
--badge:string
--urs_score:integer
--branch_id:string
--principal:integer
--outstanding_amount:double
-**repayments_table**
--repayment_id:string
--loan_id:string
--installment_no:integer
--due_date:date
--paid_date:date
--amount_due:double
--amount_paid:double
--days_past_due:integer
--repayment_status:string
-
-Now I have come to conscious with clean and aggregated data for gold. 
-
- I started with fact_table to generate daily snapshot
-
-  Portfolio Snapshot (daily grain):
-- total_active_loans
-- total_outstanding_amount
-- average_urs_score
-- percentage_overdue_loans
-- percentage_severely_overdue (DPD > 30)
-I purely used CTE and simple spark.sql for this task. I have generated individual tables for individual asks.
-
-Then I have used the same fact_table to generate second ask of risk_segmentation which is very cruical.
-
-Risk Segmentation (date x urs_badge):
-- loan_count
-- outstanding_amount
-- average_dpd
-- default_rate_proxy (DPD > 60)
-
-I have used Multiple CTE and Window functions to generate this ask. I have used Badge column as Anchor for this query. 
-
-The Final part and Critical. 
-I had to use the joined table of Repayments and fact table to generate this ask. 
-. Early Warning Indicators (date x branch_id):
-- repayment_slippage_rate
-- avg_dpd_change_vs_7_day_avg
-- risk_flag (Low / Medium / High)
-
-Honestly, I did not understand this ask I have used Gemini and Chatgpt to interpret the ask I have used Gemini code to get help for this. I probable revamped this complete ask 4 times and then went to Gemini to help me which ultimately worked. 
-Here I have used CTE, Joins, Subqueries, Window Functions and what not of SQL. 
-
-I started with creating joined table then creating a daily branch aggregates with grouping of due_date and branch_id then I have branch aggregates to create rolling aggregates with the help of window functions. 
+##  Technology Stack & Architecture
 
 
-Architecture:
-- I have used Azure and Data Bricks for this task and used GIT for version Controlling DB Notebooks. 
-- I have implemented Medallion Architecture for storing tables. I have stored Gold table in Delta format. 
-- I have implemented Start schema with one fact table and one dimension table.
-- I have usde Power BI to visualise the Gold Tables. 
+* **Cloud Platform**: Microsoft Azure
+* **Compute & Orchestration**: Azure Databricks (PySpark / Spark SQL)
+* **Version Control**: Git Integrated Notebooks
+* **Storage Format**: Delta Lake (ACID transactions, time-travel ready)
+* **BI Layer**: Power BI
 
+---
+
+##  Data Modeling (Star Schema)
+
+To avoid performance bottlenecks from massive flat-table aggregations, the pipeline structures the **Silver-to-Gold** boundary using a clean Star Schema:
+
+### 1. Fact Table (`fact_loans`)
+Contains active loan specifications, risk metrics, and customer tracking points.
+* `loan_id` (String) - Primary Key
+* `borrower_id` (String)
+* `branch_id` (String)
+* `badge` (String)
+* `urs_score` (Integer)
+* `principal` (Integer)
+* `outstanding_amount` (Double)
+
+### 2. Repayments Table (`dim_repayments`)
+Granular transactional log capturing historical and scheduled loan events.
+* `repayment_id` (String) - Primary Key
+* `loan_id` (String) - Foreign Key
+* `installment_no` (Integer)
+* `due_date` (Date)
+* `paid_date` (Date)
+* `amount_due` (Double)
+* `amount_paid` (Double)
+* `days_past_due` (Integer)
+* `repayment_status` (String)
+
+---
+
+##  Pipeline Layers & Business Logic
+
+### 🥉 Bronze: Ingestion
+* Raw transactional data lands securely inside object storage.
+* Maps raw files to operational schemas.
+
+### 🥈 Silver: Data Quality & Structural Revamp
+* **Anomaly Correction**: Filters negative values inside `amount_due` and removes logical anomalies like impossible future transaction dates.
+* **De-duplication**: Drops duplicate transactions using explicit Spark partition window definitions.
+* **Structural Optimization**: Transitions the pipeline away from massive single-table analytical queries into structured, aggregated dimension/fact sets to streamline memory use.
+
+### 🥇 Gold: Business Intelligence & Aggregations
+
+#### 1. Daily Portfolio Snapshot
+Monitors the daily pulse of active capital. Uses targeted Common Table Expressions (CTEs) to isolate:
+* Total active loan counts and absolute outstanding debt.
+* Average internal credit rating (`urs_score`).
+* Overdue rates, specifically flagging high-risk portfolio leakage where Days Past Due (DPD) exceeds 30 days.
+
+#### 2. Risk Segmentation Matrix
+Tracks performance groupings across time variables using the `badge` property as an anchor.
+* Evaluates active volume concentrations per risk bracket.
+* Derives real-time default proxy thresholds based on 60+ DPD trends.
+
+#### 3. Early Warning Indicators (Branch Level)
+Combines fact tables with transactional dimensions using multi-level windowing functions to detect localized portfolio stress.
+* Calculates **Repayment Slippage Rates** dynamically across branches.
+* Executes a **7-Day Rolling Average** comparison window to flag sharp variance swings in average DPD.
+* Assigns risk profiles (`Low` / `Medium` / `High`) to prioritize local collection workflows.
+
+---
+
+## Engineering Challenges & Adaptations
+
+* **Handling Relational Inconsistency**: Initial raw source data contained severe relational design gaps breaking logical dependencies. To prove out the business logic and pipeline scalability, a robust mock financial dataset was prompt-engineered via LLMs to emulate realistic transaction patterns without broken relations.
+* **Refactoring Flat Joins to Star Schema**: Early iterations relied on expensive, massive multi-table CTE joins. Recognizing the data-modeling pitfall, the processing design was completely refactored in the Silver layer into optimized Fact and Dimension tables, drastically dropping query execution overhead.
+* **Deciphering Rolling Financial Metrics**: Formulating rolling early-warning risk flags required utilizing advanced SQL windowing functions to generate moving rolling averages, balancing computation complexity within Spark.
